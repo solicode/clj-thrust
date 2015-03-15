@@ -25,6 +25,8 @@ Add the following dependency to your `project.clj` file:
 [net.solicode/clj-thrust "0.1.0-SNAPSHOT"]
 ```
 
+You will also need the Thrust runtime in order to run any programs that use Thrust. You can download it [here](https://github.com/breach/thrust/releases). By default, clj-thrust looks for the runtime in `$HOME/.thrust/`, but it's possible to specify a different location with `(create-process custom-thrust-directory)`.
+
 ### Examples
 
 The simplest example illustrating how to use clj-thrust is the following:
@@ -34,7 +36,7 @@ The simplest example illustrating how to use clj-thrust is the following:
   (:require [clj-thrust.core :refer [create-process destroy-process]]
             [clj-thrust.window :as w]))
 
-(let [process (create-process) ; `create-process` also takes path to Thrust runtime
+(let [process (create-process) ; `create-process` also takes path to Thrust directory
       window (w/create-window process
                :root-url "http://localhost:8080" ; URL to your web app
                :size {:width 400 :height 300})]
