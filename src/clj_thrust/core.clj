@@ -14,8 +14,8 @@
 
 ; TODO: Check for Thrust shell in the other locations that Thrust bindings authors have chosen?
 ; https://github.com/breach/thrust/issues/264
-(defn locate-thrust-shell [thrust-shell-path]
-  (let [locations [(io/file thrust-shell-path)
+(defn locate-thrust-shell [thrust-directory]
+  (let [locations [(io/file thrust-directory thrust-executable-name)
                    (io/file (System/getProperty "user.home") ".thrust" thrust-executable-name)]
         found (first (filter #(when % (.exists %)) locations))]
     (if found
@@ -26,8 +26,8 @@
                     \newline
                     "If you do not have a Thrust runtime, you can download one here: https://github.com/breach/thrust/releases"))))))
 
-(defn create-process [& [thrust-shell-path]]
-  (let [thrust-shell-path (locate-thrust-shell thrust-shell-path)
+(defn create-process [& [thrust-directory]]
+  (let [thrust-shell-path (locate-thrust-shell thrust-directory)
         thrust-shell (-> (ProcessBuilder. [thrust-shell-path]) (.start))
         pending-requests (atom {})
         current-id (atom 0)
