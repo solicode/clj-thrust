@@ -26,7 +26,7 @@
                     \newline
                     "If you do not have a Thrust runtime, you can download one here: https://github.com/breach/thrust/releases"))))))
 
-(defn create-process [& [thrust-directory]]
+(defn create-process [& {:keys [thrust-directory verbose redirect-output-to] :as opts}]
   (let [thrust-shell-path (locate-thrust-shell thrust-directory)
         thrust-shell (-> (ProcessBuilder. [thrust-shell-path]) (.start))
         pending-requests (atom {})
@@ -40,18 +40,17 @@
       (io/copy (.getInputStream thrust-shell) (r/rpc-output process)))
 
     (future
-      ; TODO: Add verbose option?
-      ;(io/copy (.getErrorStream thrust-shell) *out*)
-
-      ; If you're wondering why this is necessary, this comes straight from the documentation for
-      ; Java's Process class:
-      ;
-      ; "Because some native platforms only provide limited buffer size for standard input and
-      ;  output streams, failure to promptly write the input stream or read the output stream of
-      ;  the subprocess may cause the subprocess to block, or even deadlock."
-      ;
-      ; And I was indeed seeing these deadlocks before this line was added.
-      (io/copy (.getErrorStream thrust-shell) (NullOutputStream.)))
+      (if verbose
+        (io/copy (.getErrorStream thrust-shell) (or redirect-output-to *out*))
+        ; If you're wondering why this is necessary, this comes straight from the documentation for
+        ; Java's Process class:
+        ;
+        ; "Because some native platforms only provide limited buffer size for standard input and
+        ;  output streams, failure to promptly write the input stream or read the output stream of
+        ;  the subprocess may cause the subprocess to block, or even deadlock."
+        ;
+        ; And I was indeed seeing these deadlocks before this line was added.
+        (io/copy (.getErrorStream thrust-shell) (NullOutputStream.))))
     process))
 
 (defn destroy-process [process]

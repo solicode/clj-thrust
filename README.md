@@ -25,7 +25,11 @@ Add the following dependency to your `project.clj` file:
 [net.solicode/clj-thrust "0.1.0-SNAPSHOT"]
 ```
 
-You will also need the Thrust runtime in order to run any programs that use Thrust. You can download it [here](https://github.com/breach/thrust/releases). By default, clj-thrust looks for the runtime in `$HOME/.thrust/`, but it's possible to specify a different location with `(create-process custom-thrust-directory)`.
+You will also need the Thrust runtime in order to run any programs that use Thrust. You can download it [here](https://github.com/breach/thrust/releases). By default, clj-thrust looks for the runtime in `$HOME/.thrust/`, but it's possible to specify a different location with:
+
+```clojure
+(create-process :thrust-directory "/path/to/thrust/directory/")
+```
 
 ### Examples
 
