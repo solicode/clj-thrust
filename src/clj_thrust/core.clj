@@ -22,7 +22,7 @@
       (str found)
       (throw (FileNotFoundException.
                (str "Could not locate Thrust shell at locations:\n"
-                    (s/join "\n" (filter some? locations))
+                    (s/join "\n" (remove nil? locations))
                     \newline
                     "If you do not have a Thrust runtime, you can download one here: https://github.com/breach/thrust/releases"))))))
 
