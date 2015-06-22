@@ -4,6 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :java-source-paths ["src-java"]
+  :javac-options ["-target" "1.6" "-source" "1.6"]
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [cheshire "5.5.0"]]
   :profiles {:dev {:dependencies [[criterium "0.4.3"]]
